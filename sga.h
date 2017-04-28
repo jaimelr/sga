@@ -14,8 +14,8 @@
 
 typedef struct {
   unsigned char *chromosom;   // Valor binario
-  float         *value;       // Valor decimal
-  unsigned int  *bitPerGen;   // Resolución de la solución.
+  float         *values;       // Valores decimal de los genes
+  unsigned int  *bitsPerGen;   // Vector de bits por gen en el cromosoma
   float         fitness;
 } INDIVIDUO;
 
