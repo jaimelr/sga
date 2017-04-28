@@ -7,6 +7,8 @@
  */
 
 int main(int argc, char const *argv[]) {
-  /* code */
+  INDIVIDUO *population;
+  
+  InitializePopulation(population);
   return 0;
 }

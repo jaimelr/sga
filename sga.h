@@ -8,16 +8,17 @@
  * para 0 <= x <= 10 y 0 <= y <= 10
  */
 
-#define PARAMS_NUM 2
-#define POPULATION 5
+#define GEN_NUM         2
+#define BITS_PER_GEN    10
+#define POPULATION_SIZE 5
 
 typedef struct {
-  unsigned char *chromosom; // Valor binario
-  float         *value; // Valor decimal
-  unsigned int  *bitPerGen; // Resolución de la solución.
+  unsigned char *chromosom;   // Valor binario
+  float         *value;       // Valor decimal
+  unsigned int  *bitPerGen;   // Resolución de la solución.
   float         fitness;
 } INDIVIDUO;
 
-void InitializePopulation(int genNumber, int bitsPerGen);
+void InitializePopulation(INDIVIDUO* population);
 
 #endif _sga_h_
