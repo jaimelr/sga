@@ -1,5 +1,6 @@
 #ifndef _sga_h_
 #define _sga_h_
+#include <stdlib.h>
 #include <stdio.h>
 
 /*
@@ -11,14 +12,19 @@
 #define GEN_NUM         2
 #define BITS_PER_GEN    10
 #define POPULATION_SIZE 5
+#define CHROMOSOM_SIZE GEN_NUM*BITS_PER_GEN
 
 typedef struct {
-  unsigned char *chromosom;   // Valor binario
+  unsigned char *chromosom;    // Valor binario
   float         *values;       // Valores decimal de los genes
   unsigned int  *bitsPerGen;   // Vector de bits por gen en el cromosoma
   float         fitness;
 } INDIVIDUO;
 
+INDIVIDUO* AllocatePopulation(INDIVIDUO* population);
 void InitializePopulation(INDIVIDUO* population);
 
-#endif _sga_h_
+// ______________________________________________Development
+void PrintChromosom(unsigned char *chromosom);
+
+#endif

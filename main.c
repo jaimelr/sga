@@ -8,7 +8,9 @@
 
 int main(int argc, char const *argv[]) {
   INDIVIDUO *population;
-  
+
+  population = AllocatePopulation(population);
   InitializePopulation(population);
+  PrintChromosom(population[0].chromosom);
   return 0;
 }
