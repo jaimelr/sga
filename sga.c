@@ -40,7 +40,20 @@ void PrintChromosom(unsigned char *chromosom) {
   int i;
 
   for (i = 0; i < CHROMOSOM_SIZE; i++) {
+    if (i == 10) {
+      printf("-- ");
+    }
     printf("|%d| ", chromosom[i]);
   }
   printf("\n");
+}
+
+void PrintPopulation(INDIVIDUO* population) {
+  int i;
+
+  for (i = 0; i < POPULATION_SIZE; i++) {
+    printf("Individuo [%d]: ", i);
+    PrintChromosom(population[i].chromosom);
+    printf("\n");
+  }
 }

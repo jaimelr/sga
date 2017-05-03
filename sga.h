@@ -24,7 +24,9 @@ typedef struct {
 INDIVIDUO* AllocatePopulation(INDIVIDUO* population);
 void InitializePopulation(INDIVIDUO* population);
 
+
 // ______________________________________________Development
 void PrintChromosom(unsigned char *chromosom);
+void PrintPopulation(INDIVIDUO* population);
 
 #endif

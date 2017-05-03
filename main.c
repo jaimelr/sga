@@ -11,6 +11,6 @@ int main(int argc, char const *argv[]) {
 
   population = AllocatePopulation(population);
   InitializePopulation(population);
-  PrintChromosom(population[0].chromosom);
+  PrintPopulation(population);
   return 0;
 }
