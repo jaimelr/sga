@@ -32,7 +32,29 @@ void InitializePopulation(INDIVIDUO* population) {
       else
         population[i].chromosom[j] = 1;
     }
+    for (j = 0; i < GEN_NUM; i++) {
+      population[i].bitsPerGen[j] = BITS_PER_GEN;
+    }
   }
+}
+
+float* CalculateProbabilities(INDIVIDUO* population) {
+  int i;
+  float fitnessTotal;
+  float* probabilities;
+
+  probabilities = (float*)malloc(POPULATION_SIZE*sizeof(float));
+
+  for (i = 0, fitnessTotal = 0; i < POPULATION_SIZE; i++) {
+    fitnessTotal += population[i].fitness;
+  }
+
+  for (i = 0; i < POPULATION_SIZE; i++) {
+    float[i] = population[i].fitness/fitnessTotal;
+    float[i] *= 100;
+  }
+
+  return probabilities;
 }
 
 //______________________________________________Development

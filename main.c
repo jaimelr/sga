@@ -8,9 +8,11 @@
 
 int main(int argc, char const *argv[]) {
   INDIVIDUO *population;
+  float* probabilities;
 
   population = AllocatePopulation(population);
   InitializePopulation(population);
   PrintPopulation(population);
+  
   return 0;
 }

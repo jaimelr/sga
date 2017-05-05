@@ -23,6 +23,7 @@ typedef struct {
 
 INDIVIDUO* AllocatePopulation(INDIVIDUO* population);
 void InitializePopulation(INDIVIDUO* population);
+float* CalculateProbabilities(INDIVIDUO* population);
 
 
 // ______________________________________________Development
