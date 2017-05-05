@@ -2,7 +2,6 @@
 #define _sga_h_
 #include <stdlib.h>
 #include <stdio.h>
-#include <math.h>
 
 /*
  * PROBLEMA:
@@ -14,9 +13,6 @@
 #define BITS_PER_GEN    10
 #define POPULATION_SIZE 5
 #define CHROMOSOM_SIZE GEN_NUM*BITS_PER_GEN
-#define RANGE_MAX       10
-#define RANGE_MIN       0
-#define RANGE           RANGE_MAX-RANGE_MIN
 
 typedef struct {
   unsigned char *chromosom;    // Valor binario
@@ -25,23 +21,12 @@ typedef struct {
   float         fitness;
 } INDIVIDUO;
 
-
-
 INDIVIDUO* AllocatePopulation(INDIVIDUO* population);
 void InitializePopulation(INDIVIDUO* population);
 
 
-//Evaluation
-int BitsToInt(unsigned char *chromosom);
-void GenDecodification(INDIVIDUO* population);
-
-
-
-
 // ______________________________________________Development
 void PrintChromosom(unsigned char *chromosom);
-void PrintChromosoms(INDIVIDUO* population);
-
-void PrintValues(INDIVIDUO* population);
+void PrintPopulation(INDIVIDUO* population);
 
 #endif
