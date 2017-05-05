@@ -13,6 +13,8 @@ int main(int argc, char const *argv[]) {
   population = AllocatePopulation(population);
   InitializePopulation(population);
   PrintPopulation(population);
+  GenDecodification(population);
+  PrintValues(population);
   
   return 0;
 }
