@@ -32,90 +32,28 @@ void InitializePopulation(INDIVIDUO* population) {
       else
         population[i].chromosom[j] = 1;
     }
-    for(j = 0; j < GEN_NUM; j++) {
-      population[i].bitsPerGen[j] = BITS_PER_GEN;
-    }
   }
 }
-
-//Evaluation
-int BitsToInt(unsigned char *chromosom) {
-  int i;
-  unsigned int IntChromosom = 0;
-
-  for(i = BITS_PER_GEN-1; i >= 0; i--) {
-    if(chromosom[i] == 1){
-        IntChromosom = IntChromosom + pow(2,BITS_PER_GEN - 1 - i);
-        //printf("\n%d\n", IntChromosom);
-    }
-    //printf("i = %d\n", i);
-  }
-  return IntChromosom;
-}
-
-
-void GenDecodification(INDIVIDUO* population) {
-  //unsigned int i;
-  //unsigned int j;
-  //unsigned int init;
-  //unsigned int IntGen;
-  int i;
-  int j;
-  int init;
-  int IntGen;
-  int k;
-
-  for(i = 0; i < POPULATION_SIZE; i++) {
-    init = 0;
-    for(j = 0; j < GEN_NUM; j++) {
-      IntGen = 0;
-      for (k = init + BITS_PER_GEN - 1; k >= init; k--) {
-        if(population[i].chromosom[k] == 1) {
-            IntGen = IntGen + pow(2, BITS_PER_GEN - 1 - k + init);
-            //printf("\nPotencia = %d\n", BITS_PER_GEN - 1 - k + init);
-            //printf("\nK = %d \t\tIntGen = %d\n", k, IntGen);
-        }
-      }
-      population[i].values[j] = ( (IntGen / (pow(2,BITS_PER_GEN) - 1) )*(RANGE) ) + RANGE_MIN;
-      init = init + BITS_PER_GEN;
-      //printf("\nValue [%d] = %f\n", j, population[i].values[j]);
-      //printf("\ninit = %d\n", init);
-    }
-  }
-}
-
 
 //______________________________________________Development
 void PrintChromosom(unsigned char *chromosom) {
   int i;
 
   for (i = 0; i < CHROMOSOM_SIZE; i++) {
+    if (i == 10) {
+      printf("-- ");
+    }
     printf("|%d| ", chromosom[i]);
   }
   printf("\n");
 }
 
-void PrintChromosoms(INDIVIDUO* population) {
-  int i, j;
+void PrintPopulation(INDIVIDUO* population) {
+  int i;
+
   for (i = 0; i < POPULATION_SIZE; i++) {
-    printf("\n");
-    for (j = 0; j < CHROMOSOM_SIZE; j++) {
-      printf("|%d| ", population[i].chromosom[j]);
-    }
+    printf("Individuo [%d]: ", i);
+    PrintChromosom(population[i].chromosom);
     printf("\n");
   }
-}
-
-
-void PrintValues(INDIVIDUO* population) {
-  unsigned int i;
-  unsigned int j;
-
-  for(i = 0; i < POPULATION_SIZE; i++) {
-    for(j = 0; j < GEN_NUM; j++) {
-      printf("\nIndividuo [%d] Valor [%d] = %f\n", i, j, population[i].values[j]);
-    }
-    printf("\n");
-  }
-
 }
