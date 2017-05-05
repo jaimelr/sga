@@ -8,9 +8,16 @@
 
 int main(int argc, char const *argv[]) {
   INDIVIDUO *population;
+  //int num=0;
 
   population = AllocatePopulation(population);
   InitializePopulation(population);
-  PrintPopulation(population);
+  //PrintChromosom(population[0].chromosom);
+  PrintChromosoms(population);
+  //num=BitsToInt(population[0].chromosom);
+  //printf("\n\n%d\n", num);
+  GenDecodification(population);
+  PrintValues(population);
+
   return 0;
 }
