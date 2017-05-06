@@ -31,7 +31,11 @@ float* CalculateProbabilities(INDIVIDUO* population);
 int BitsToInt(unsigned char *chromosom);
 void GenDecodification(INDIVIDUO* population);
 
+//______________________________________________Mutacion
+void Mutation(INDIVIDUO* population);
 
+
+void FreeMemory(INDIVIDUO* population);
 
 // ______________________________________________Development
 void PrintChromosom(unsigned char *chromosom);

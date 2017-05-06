@@ -93,6 +93,38 @@ float* CalculateProbabilities(INDIVIDUO* population) {
   return probabilities;
 }
 
+
+void Mutation(INDIVIDUO* population) {
+  int i;
+  int j;
+  int randNum;
+
+  for (i = 0; i < POPULATION_SIZE; i++) {
+    for (j = 0; j < CHROMOSOM_SIZE; j++) {
+      //randNum = 1000*((1.0*rand())/RAND_MAX);
+      randNum = rand() % 1000 + 1;
+      if(randNum == 1) {
+        if(population[i].chromosom[j] == 0) {
+          population[i].chromosom[j] = 1;
+        }
+        else {
+          population[i].chromosom[j] = 0;
+        }
+      }
+    }
+  }
+}
+
+void FreeMemory(INDIVIDUO* population) {
+  int i;
+
+  for (i = 0; i < POPULATION_SIZE; i++) {
+    free(population[i].chromosom);
+    free(population[i].values);
+    free(population[i].bitsPerGen);
+  }
+}
+
 //______________________________________________Development
 void PrintChromosom(unsigned char *chromosom) {
   int i;

@@ -15,6 +15,12 @@ int main(int argc, char const *argv[]) {
   PrintPopulation(population);
   GenDecodification(population);
   PrintValues(population);
-  
+
+  Mutation(population);
+  PrintPopulation(population);
+
+  FreeMemory(population);
+  free(population);
+
   return 0;
 }
