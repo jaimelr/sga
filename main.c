@@ -9,12 +9,17 @@
 int main(int argc, char const *argv[]) {
   INDIVIDUO *population;
   float* probabilities;
+  srand(time(NULL));
 
   population = AllocatePopulation(population);
   InitializePopulation(population);
   PrintPopulation(population);
   GenDecodification(population);
-  PrintValues(population);
-  
+  CalculateFitness(population);
+  //PrintValues(population);
+
+  printf("\n\nRoulette Game\n");
+  RouletteGame(population);
+
   return 0;
 }

@@ -32,7 +32,7 @@ void InitializePopulation(INDIVIDUO* population) {
       else
         population[i].chromosom[j] = 1;
     }
-    for (j = 0; i < GEN_NUM; i++) {
+    for (j = 0; j < GEN_NUM; j++) {
       population[i].bitsPerGen[j] = BITS_PER_GEN;
     }
   }
@@ -73,6 +73,21 @@ void GenDecodification(INDIVIDUO* population) {
   }
 }
 
+void CalculateFitness(INDIVIDUO* population)
+{
+  int i;
+  float x;
+  float y;
+
+  for (i = 0; i < POPULATION_SIZE; i++)
+  {
+  	x = population[i].values[0];
+    y = population[i].values[1];
+  	 population[i].fitness = 50 - (x-5) * (x-5) - (y-5) * (y-5);
+     printf("Individuo [%d], fitness = %f\n", i, population[i].fitness);
+  }
+}
+
 
 float* CalculateProbabilities(INDIVIDUO* population) {
   int i;
@@ -83,14 +98,60 @@ float* CalculateProbabilities(INDIVIDUO* population) {
 
   for (i = 0, fitnessTotal = 0; i < POPULATION_SIZE; i++) {
     fitnessTotal += population[i].fitness;
+    printf("Fitness Total: %f\n", fitnessTotal);
   }
 
   for (i = 0; i < POPULATION_SIZE; i++) {
     probabilities[i] = population[i].fitness/fitnessTotal;
     probabilities[i] *= 100;
+    printf("\nProbabilidades de Individuo %d:\n", i);
+    printf("- %f\n", probabilities[i]);
   }
 
   return probabilities;
+}
+
+char* RouletteGame(INDIVIDUO* population) {
+  char father;
+  int i;
+  float* probabilities;
+  char* fathers;
+
+  probabilities = (float*)malloc(POPULATION_SIZE*sizeof(float));
+  fathers = (char*)malloc(POPULATION_SIZE*sizeof(char));
+
+  probabilities = CalculateProbabilities(population);
+
+  for (i = 0; i < POPULATION_SIZE; i++) {
+    father = PlayRoulette(probabilities);
+    PrintFathers(population[father], father);
+    *(fathers + i) = father;
+  }
+
+  return fathers;
+}
+
+char PlayRoulette(float* probabilities) {
+  char father;
+  int i;
+  float randNum;
+  float incrementalRange;
+
+  incrementalRange = 0;
+  randNum = 100*((1.0*rand())/RAND_MAX);
+  for (i = 0; i < POPULATION_SIZE; i++) {
+    incrementalRange += probabilities[i];
+    if(randNum < incrementalRange) {
+      father = i;
+      break;
+    }
+  }
+
+  return father;
+}
+
+void Cross(INDIVIDUO father1, INDIVIDUO father2) {
+
 }
 
 //______________________________________________Development
@@ -126,4 +187,9 @@ void PrintValues(INDIVIDUO* population) {
     }
     printf("\n");
   }
+}
+
+void PrintFathers(INDIVIDUO father, char index) {
+  printf("Father: %d \t", index);
+  printf("\n");
 }

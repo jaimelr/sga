@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <time.h>
 
 /*
  * PROBLEMA:
@@ -12,7 +13,7 @@
 
 #define GEN_NUM         2
 #define BITS_PER_GEN    10
-#define POPULATION_SIZE 5
+#define POPULATION_SIZE 6
 #define CHROMOSOM_SIZE GEN_NUM*BITS_PER_GEN
 #define RANGE_MAX       10
 #define RANGE_MIN       0
@@ -27,9 +28,13 @@ typedef struct {
 
 INDIVIDUO* AllocatePopulation(INDIVIDUO* population);
 void InitializePopulation(INDIVIDUO* population);
-float* CalculateProbabilities(INDIVIDUO* population);
 int BitsToInt(unsigned char *chromosom);
 void GenDecodification(INDIVIDUO* population);
+void CalculateFitness(INDIVIDUO* population);
+float* CalculateProbabilities(INDIVIDUO* population);
+char* RouletteGame(INDIVIDUO* population);
+char PlayRoulette(float* probabilities);
+void Cross(INDIVIDUO father1, INDIVIDUO father2);
 
 
 
@@ -37,5 +42,6 @@ void GenDecodification(INDIVIDUO* population);
 void PrintChromosom(unsigned char *chromosom);
 void PrintPopulation(INDIVIDUO* population);
 void PrintValues(INDIVIDUO* population);
+void PrintFathers(INDIVIDUO father, char index);
 
 #endif
