@@ -15,8 +15,8 @@
 #define BITS_PER_GEN    10
 #define POPULATION_SIZE 6
 #define CHROMOSOM_SIZE  GEN_NUM*BITS_PER_GEN
-#define RANGE_MAX       10
-#define RANGE_MIN       0
+#define RANGE_MAX       2.048
+#define RANGE_MIN       -2.048
 #define RANGE           RANGE_MAX-RANGE_MIN
 #define PC              0.8
 
