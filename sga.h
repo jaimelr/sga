@@ -14,10 +14,11 @@
 #define GEN_NUM         2
 #define BITS_PER_GEN    10
 #define POPULATION_SIZE 6
-#define CHROMOSOM_SIZE GEN_NUM*BITS_PER_GEN
+#define CHROMOSOM_SIZE  GEN_NUM*BITS_PER_GEN
 #define RANGE_MAX       10
 #define RANGE_MIN       0
-#define RANGE RANGE_MAX-RANGE_MIN
+#define RANGE           RANGE_MAX-RANGE_MIN
+#define PC              0.8
 
 typedef struct {
   unsigned char *chromosom;    // Valor binario
@@ -28,13 +29,18 @@ typedef struct {
 
 INDIVIDUO* AllocatePopulation(INDIVIDUO* population);
 void InitializePopulation(INDIVIDUO* population);
-int BitsToInt(unsigned char *chromosom);
 void GenDecodification(INDIVIDUO* population);
 void CalculateFitness(INDIVIDUO* population);
 float* CalculateProbabilities(INDIVIDUO* population);
 char* RouletteGame(INDIVIDUO* population);
 char PlayRoulette(float* probabilities);
-void Cross(INDIVIDUO father1, INDIVIDUO father2);
+INDIVIDUO* Cross(INDIVIDUO* population, char* fathers);
+void Mutation(INDIVIDUO* population);
+int SetupBest(INDIVIDUO* population, unsigned int idGbest);
+void CalculateFitness(INDIVIDUO* population);
+
+void FreeMemory(INDIVIDUO* population);
+
 
 
 

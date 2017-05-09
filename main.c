@@ -8,18 +8,32 @@
 
 int main(int argc, char const *argv[]) {
   INDIVIDUO *population;
+  char* fathers;
+  unsigned int  idGbest = 0;
+  float error;
   float* probabilities;
   srand(time(NULL));
 
+  error = 1;
   population = AllocatePopulation(population);
   InitializePopulation(population);
   PrintPopulation(population);
   GenDecodification(population);
   CalculateFitness(population);
-  //PrintValues(population);
-
-  printf("\n\nRoulette Game\n");
-  RouletteGame(population);
+  while (error < 5) {
+    fathers = RouletteGame(population);
+    population = Cross(population, fathers);
+    PrintPopulation(population);
+    //Mutation(population);
+    idGbest = SetupBest(population, idGbest);
+    GenDecodification(population);
+    CalculateFitness(population);
+    //PrintValues(population);
+    printf("Global best: %f\n", population[idGbest].fitness);
+    error++;
+  }
+  FreeMemory(population);
+  free(population);
 
   return 0;
 }

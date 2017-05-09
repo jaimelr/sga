@@ -38,19 +38,6 @@ void InitializePopulation(INDIVIDUO* population) {
   }
 }
 
-int BitsToInt(unsigned char *chromosom) {
-  int i;
-  unsigned int IntChromosom = 0;
-
-  for(i = BITS_PER_GEN-1; i >= 0; i--) {
-    if(chromosom[i] == 1){
-        IntChromosom = IntChromosom + pow(2,BITS_PER_GEN - 1 - i);
-    }
-  }
-  return IntChromosom;
-}
-
-
 void GenDecodification(INDIVIDUO* population) {
   int i;
   int j;
@@ -98,14 +85,13 @@ float* CalculateProbabilities(INDIVIDUO* population) {
 
   for (i = 0, fitnessTotal = 0; i < POPULATION_SIZE; i++) {
     fitnessTotal += population[i].fitness;
-    printf("Fitness Total: %f\n", fitnessTotal);
   }
 
   for (i = 0; i < POPULATION_SIZE; i++) {
     probabilities[i] = population[i].fitness/fitnessTotal;
     probabilities[i] *= 100;
-    printf("\nProbabilidades de Individuo %d:\n", i);
-    printf("- %f\n", probabilities[i]);
+    //printf("\nProbabilidades de Individuo %d:\n", i);
+    //printf("- %f\n", probabilities[i]);
   }
 
   return probabilities;
@@ -124,7 +110,6 @@ char* RouletteGame(INDIVIDUO* population) {
 
   for (i = 0; i < POPULATION_SIZE; i++) {
     father = PlayRoulette(probabilities);
-    PrintFathers(population[father], father);
     *(fathers + i) = father;
   }
 
@@ -150,8 +135,101 @@ char PlayRoulette(float* probabilities) {
   return father;
 }
 
-void Cross(INDIVIDUO father1, INDIVIDUO father2) {
+INDIVIDUO* Cross(INDIVIDUO* population, char* fathers)
+{
+	int i, j;
+  int k;
+  int p1;
+  int p2;
+	float numRand;
+	int Px;
+  unsigned char *chromosom1;
+  unsigned char *chromosom2;
+  unsigned char *chromosomAux;
+	INDIVIDUO* GenerationNew;
 
+	Px = (CHROMOSOM_SIZE - 1)*((1.0*rand())/RAND_MAX) + 1; //calcula el punto de cruza de progenitores
+
+	GenerationNew = AllocatePopulation(GenerationNew);
+
+  for (k = 0; k < POPULATION_SIZE; k+=2) {
+    numRand = (1.0*rand())/RAND_MAX; //calcula el pc de progenitores
+    p1 = *(fathers + k);
+    p2 = *(fathers + k+1);
+    PrintFathers(population[p1], p1);
+    PrintFathers(population[p2], p2);
+    if(numRand<PC) {
+      for (i = 0; i < POPULATION_SIZE; i+=2) {
+        for (j = 0; j <CHROMOSOM_SIZE ; j++) {
+          if(j<Px) {//si la interacion esta antes del punto de cruza
+            GenerationNew[i].chromosom[j] = population[p1].chromosom[j];//hijo 1 toma el bit del padre 1 primera parte
+            GenerationNew[i+1].chromosom[j] = population[p2].chromosom[j];//hijo 2 toma el bit del padre 2
+          }
+          else {
+            GenerationNew[i].chromosom[j] = population[p2].chromosom[j];//hijo 1 toma el bit del padre 2 segunda parte
+            GenerationNew[i+1].chromosom[j] = population[p1].chromosom[j];//hijo 2 toma el bit del padre 1
+          }
+        }
+      }
+    }
+    else {
+      printf("\nNo se ha realizado la cruza de [%d][%d]\nPorque randNum = %f\n", p1, p2, numRand);
+      for (i = 0; i < POPULATION_SIZE; i+=2) {//si no se cruzan entonces los nuevos hijos son exactamente iguales a los padres
+        for (j = 0; j <CHROMOSOM_SIZE ; j++) {
+          GenerationNew[i].chromosom[j] = population[p1].chromosom[j];
+          GenerationNew[i+1].chromosom[j] = population[p2].chromosom[j];
+        }
+      }
+    }
+  }
+
+	return GenerationNew;
+}
+
+void Mutation(INDIVIDUO* population) {
+  int i;
+  int j;
+  int randNum;
+
+  for (i = 0; i < POPULATION_SIZE; i++) {
+    for (j = 0; j < CHROMOSOM_SIZE; j++) {
+      //randNum = 1000*((1.0*rand())/RAND_MAX);
+      randNum = rand() % 1000 + 1;
+      if(randNum == 1) {
+        if(population[i].chromosom[j] == 0) {
+          population[i].chromosom[j] = 1;
+        }
+        else {
+          population[i].chromosom[j] = 0;
+        }
+      }
+    }
+  }
+}
+
+int SetupBest(INDIVIDUO* population, unsigned int idbest) {
+	unsigned int i;
+	float best;
+
+	best = population[idbest].fitness;
+	for(i=0; i < POPULATION_SIZE; i++)
+	{
+		if (population[i].fitness > best)
+		{
+			best = population[i].fitness;
+		}
+	}
+  return best;
+}
+
+void FreeMemory(INDIVIDUO* population) {
+  int i;
+
+  for (i = 0; i < POPULATION_SIZE; i++) {
+    free(population[i].chromosom);
+    free(population[i].values);
+    free(population[i].bitsPerGen);
+  }
 }
 
 //______________________________________________Development
@@ -182,11 +260,13 @@ void PrintValues(INDIVIDUO* population) {
   unsigned int j;
 
   for(i = 0; i < POPULATION_SIZE; i++) {
+    printf("\nIndividuo [%d]:", i);
     for(j = 0; j < GEN_NUM; j++) {
-      printf("\nIndividuo [%d] Valor [%d] = %f\n", i, j, population[i].values[j]);
+      printf("\n\tValor [%d] = %f", j, population[i].values[j]);
     }
-    printf("\n");
+    printf("\n\tFitness = %f\n", population[i].fitness);
   }
+  printf("\n");
 }
 
 void PrintFathers(INDIVIDUO father, char index) {
