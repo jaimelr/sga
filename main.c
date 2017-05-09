@@ -20,11 +20,11 @@ int main(int argc, char const *argv[]) {
   PrintPopulation(population);
   GenDecodification(population);
   CalculateFitness(population);
-  while (error < 5) {
+  while (error < 100) {
     fathers = RouletteGame(population);
     population = Cross(population, fathers);
     PrintPopulation(population);
-    //Mutation(population);
+    Mutation(population);
     idGbest = SetupBest(population, idGbest);
     GenDecodification(population);
     CalculateFitness(population);

@@ -148,20 +148,21 @@ INDIVIDUO* Cross(INDIVIDUO* population, char* fathers)
   unsigned char *chromosomAux;
 	INDIVIDUO* GenerationNew;
 
-	Px = (CHROMOSOM_SIZE - 1)*((1.0*rand())/RAND_MAX) + 1; //calcula el punto de cruza de progenitores
 
 	GenerationNew = AllocatePopulation(GenerationNew);
 
-  for (k = 0; k < POPULATION_SIZE; k+=2) {
+  for (i = 0; i < POPULATION_SIZE; i+=2) {
+    Px = (CHROMOSOM_SIZE - 1)*((1.0*rand())/RAND_MAX) + 1; //calcula el punto de cruza de progenitores
+    printf("Punto de cruce: %d\n", Px);
     numRand = (1.0*rand())/RAND_MAX; //calcula el pc de progenitores
-    p1 = *(fathers + k);
-    p2 = *(fathers + k+1);
+    p1 = *(fathers + i);
+    p2 = *(fathers + i+1);
     PrintFathers(population[p1], p1);
     PrintFathers(population[p2], p2);
-    if(numRand<PC) {
-      for (i = 0; i < POPULATION_SIZE; i+=2) {
-        for (j = 0; j <CHROMOSOM_SIZE ; j++) {
-          if(j<Px) {//si la interacion esta antes del punto de cruza
+    if(numRand < PC) {
+      //for (i = 0; i < POPULATION_SIZE; i+=2) {
+        for (j = 0; j < CHROMOSOM_SIZE; j++) {
+          if(j < Px) {//si la interacion esta antes del punto de cruza
             GenerationNew[i].chromosom[j] = population[p1].chromosom[j];//hijo 1 toma el bit del padre 1 primera parte
             GenerationNew[i+1].chromosom[j] = population[p2].chromosom[j];//hijo 2 toma el bit del padre 2
           }
@@ -170,7 +171,7 @@ INDIVIDUO* Cross(INDIVIDUO* population, char* fathers)
             GenerationNew[i+1].chromosom[j] = population[p1].chromosom[j];//hijo 2 toma el bit del padre 1
           }
         }
-      }
+      //}
     }
     else {
       printf("\nNo se ha realizado la cruza de [%d][%d]\nPorque randNum = %f\n", p1, p2, numRand);
