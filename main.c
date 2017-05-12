@@ -20,7 +20,7 @@ int main(int argc, char const *argv[]) {
   PrintPopulation(population);
   GenDecodification(population);
   CalculateFitness(population);
-  while (error > 0.1) {
+  while (error > 0.001) {
     fathers = RouletteGame(population);
     population = Cross(population, fathers);
     //PrintPopulation(population);
@@ -33,6 +33,8 @@ int main(int argc, char const *argv[]) {
   }
   printf("\nPoblación solución\n");
   PrintPopulation(population);
+  printf("Valor de x: %f\n", population[idGbest].values[0]);
+  printf("Valor de y: %f\n", population[idGbest].values[1]);
   printf("Global best: %f\n", population[idGbest].fitness);
   FreeMemory(population);
   free(population);
