@@ -73,7 +73,7 @@ void CalculateFitness(INDIVIDUO* population)
     printf("\nVALUES\n");
     printf("x = %f\ty = %f\n", x, y);
   	population[i].fitness = 5000 - 100*(x*x-y)*(x*x-y)+(1-x)*(1-x);
-    printf("Individuo [%d], fitness = %f\n", i, population[i].fitness);
+    //printf("Individuo [%d], fitness = %f\n", i, population[i].fitness);
   }
 }
 
@@ -92,8 +92,8 @@ float* CalculateProbabilities(INDIVIDUO* population) {
   for (i = 0; i < POPULATION_SIZE; i++) {
     probabilities[i] = population[i].fitness/fitnessTotal;
     probabilities[i] *= 100;
-    printf("\nProbabilidades de Individuo %d:\n", i);
-    printf("-> %f\n", probabilities[i]);
+    //printf("\nProbabilidades de Individuo %d:\n", i);
+    //printf("-> %f\n", probabilities[i]);
   }
 
   return probabilities;
@@ -159,8 +159,8 @@ INDIVIDUO* Cross(INDIVIDUO* population, char* fathers)
     numRand = (1.0*rand())/RAND_MAX; //calcula el pc de progenitores
     p1 = *(fathers + i);
     p2 = *(fathers + i+1);
-    PrintFathers(population[p1], p1);
-    PrintFathers(population[p2], p2);
+    //PrintFathers(population[p1], p1);
+    //PrintFathers(population[p2], p2);
     if(numRand < PC) {
       for (j = 0; j < CHROMOSOM_SIZE; j++) {
         if(j < Px) {//si la interacion esta antes del punto de cruza

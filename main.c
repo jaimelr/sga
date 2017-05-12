@@ -14,24 +14,24 @@ int main(int argc, char const *argv[]) {
   float* probabilities;
   srand(time(NULL));
 
-  error = 1;
+  error = 100;
   population = AllocatePopulation(population);
   InitializePopulation(population);
   PrintPopulation(population);
   GenDecodification(population);
   CalculateFitness(population);
-  while (error < 100) {
+  while (error > 1) {
+    error = 5000 - population[idGbest].fitness;
     fathers = RouletteGame(population);
     population = Cross(population, fathers);
-    PrintPopulation(population);
+    //PrintPopulation(population);
     Mutation(population);
     idGbest = SetupBest(population, idGbest);
     GenDecodification(population);
     CalculateFitness(population);
     //PrintValues(population);
-    printf("Global best: %f\n", population[idGbest].fitness);
-    error++;
   }
+  printf("Global best: %f\n", population[idGbest].fitness);
   FreeMemory(population);
   free(population);
 
