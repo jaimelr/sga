@@ -71,7 +71,7 @@ void CalculateFitness(INDIVIDUO* population)
   	x = population[i].values[0];
     y = population[i].values[1];
   	 population[i].fitness = 50 - (x-5) * (x-5) - (y-5) * (y-5);
-     printf("Individuo [%d], fitness = %f\n", i, population[i].fitness);
+     //printf("Individuo [%d], fitness = %f\n", i, population[i].fitness);
   }
 }
 
@@ -153,12 +153,12 @@ INDIVIDUO* Cross(INDIVIDUO* population, char* fathers)
 
   for (i = 0; i < POPULATION_SIZE; i+=2) {
     Px = (CHROMOSOM_SIZE - 1)*((1.0*rand())/RAND_MAX) + 1; //calcula el punto de cruza de progenitores
-    printf("Punto de cruce: %d\n", Px);
+    //printf("Punto de cruce: %d\n", Px);
     numRand = (1.0*rand())/RAND_MAX; //calcula el pc de progenitores
     p1 = *(fathers + i);
     p2 = *(fathers + i+1);
-    PrintFathers(population[p1], p1);
-    PrintFathers(population[p2], p2);
+    //PrintFathers(population[p1], p1);
+    //PrintFathers(population[p2], p2);
     if(numRand < PC) {
       //for (i = 0; i < POPULATION_SIZE; i+=2) {
         for (j = 0; j < CHROMOSOM_SIZE; j++) {
@@ -174,7 +174,7 @@ INDIVIDUO* Cross(INDIVIDUO* population, char* fathers)
       //}
     }
     else {
-      printf("\nNo se ha realizado la cruza de [%d][%d]\nPorque randNum = %f\n", p1, p2, numRand);
+      //printf("\nNo se ha realizado la cruza de [%d][%d]\nPorque randNum = %f\n", p1, p2, numRand);
       for (i = 0; i < POPULATION_SIZE; i+=2) {//si no se cruzan entonces los nuevos hijos son exactamente iguales a los padres
         for (j = 0; j <CHROMOSOM_SIZE ; j++) {
           GenerationNew[i].chromosom[j] = population[p1].chromosom[j];
