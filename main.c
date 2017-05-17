@@ -25,12 +25,10 @@ int main(int argc, char const *argv[]) {
   while (error > 0.0001 && limit < 300000) {
     fathers = RouletteGame(population);
     population = Cross(population, fathers);
-    //PrintPopulation(population);
     Mutation(population);
     idGbest = SetupBest(population, idGbest);
     GenDecodification(population);
     CalculateFitness(population);
-    //PrintValues(population);
     error = 50 - population[idGbest].fitness;
     limit++;
   }

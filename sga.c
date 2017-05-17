@@ -137,8 +137,8 @@ char PlayRoulette(float* probabilities) {
 
 INDIVIDUO* Cross(INDIVIDUO* population, char* fathers)
 {
-	int i, j;
-  int k;
+	int i;
+  int j;
   int p1;
   int p2;
 	float numRand;
@@ -160,27 +160,24 @@ INDIVIDUO* Cross(INDIVIDUO* population, char* fathers)
     //PrintFathers(population[p1], p1);
     //PrintFathers(population[p2], p2);
     if(numRand < PC) {
-      //for (i = 0; i < POPULATION_SIZE; i+=2) {
-        for (j = 0; j < CHROMOSOM_SIZE; j++) {
-          if(j < Px) {//si la interacion esta antes del punto de cruza
-            GenerationNew[i].chromosom[j] = population[p1].chromosom[j];//hijo 1 toma el bit del padre 1 primera parte
-            GenerationNew[i+1].chromosom[j] = population[p2].chromosom[j];//hijo 2 toma el bit del padre 2
-          }
-          else {
-            GenerationNew[i].chromosom[j] = population[p2].chromosom[j];//hijo 1 toma el bit del padre 2 segunda parte
-            GenerationNew[i+1].chromosom[j] = population[p1].chromosom[j];//hijo 2 toma el bit del padre 1
-          }
+      for (j = 0; j < CHROMOSOM_SIZE; j++) {
+        if(j < Px) {//si la interacion esta antes del punto de cruza
+          GenerationNew[i].chromosom[j] = population[p1].chromosom[j];//hijo 1 toma el bit del padre 1 primera parte
+          GenerationNew[i+1].chromosom[j] = population[p2].chromosom[j];//hijo 2 toma el bit del padre 2
         }
-      //}
+        else {
+          GenerationNew[i].chromosom[j] = population[p2].chromosom[j];//hijo 1 toma el bit del padre 2 segunda parte
+          GenerationNew[i+1].chromosom[j] = population[p1].chromosom[j];//hijo 2 toma el bit del padre 1
+        }
+      }
     }
     else {
       //printf("\nNo se ha realizado la cruza de [%d][%d]\nPorque randNum = %f\n", p1, p2, numRand);
-      for (i = 0; i < POPULATION_SIZE; i+=2) {//si no se cruzan entonces los nuevos hijos son exactamente iguales a los padres
+      //si no se cruzan entonces los nuevos hijos son exactamente iguales a los padres
         for (j = 0; j <CHROMOSOM_SIZE ; j++) {
           GenerationNew[i].chromosom[j] = population[p1].chromosom[j];
           GenerationNew[i+1].chromosom[j] = population[p2].chromosom[j];
         }
-      }
     }
   }
 

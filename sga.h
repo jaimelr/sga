@@ -13,7 +13,7 @@
 
 #define GEN_NUM         2
 #define BITS_PER_GEN    10
-#define POPULATION_SIZE 6
+#define POPULATION_SIZE 100
 #define CHROMOSOM_SIZE  GEN_NUM*BITS_PER_GEN
 #define RANGE_MAX       10
 #define RANGE_MIN       0
