@@ -12,15 +12,17 @@ int main(int argc, char const *argv[]) {
   unsigned int  idGbest = 0;
   float error;
   float* probabilities;
+  int limit;
   srand(time(NULL));
 
+  limit = 0;
   error = 1;
   population = AllocatePopulation(population);
   InitializePopulation(population);
-  PrintPopulation(population);
+  //PrintPopulation(population);
   GenDecodification(population);
   CalculateFitness(population);
-  while (error > 0.001) {
+  while (error > 0.0001 && limit < 300000) {
     fathers = RouletteGame(population);
     population = Cross(population, fathers);
     //PrintPopulation(population);
@@ -30,9 +32,11 @@ int main(int argc, char const *argv[]) {
     CalculateFitness(population);
     //PrintValues(population);
     error = 50 - population[idGbest].fitness;
+    limit++;
   }
-  printf("\nPoblación solución\n");
-  PrintPopulation(population);
+  printf("Generación: %d\n", limit);
+  //printf("\nPoblación solución\n");
+  //PrintPopulation(population);
   printf("Valor de x: %f\n", population[idGbest].values[0]);
   printf("Valor de y: %f\n", population[idGbest].values[1]);
   printf("Global best: %f\n", population[idGbest].fitness);
