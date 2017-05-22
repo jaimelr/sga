@@ -8,9 +8,9 @@
 
 int main(int argc, char const *argv[]) {
   INDIVIDUO *population;
-  char* fathers;
+  int* fathers;
   unsigned int  idGbest = 0;
-  float error;
+  double error;
   float* probabilities;
   int limit;
   srand(time(NULL));
@@ -19,10 +19,9 @@ int main(int argc, char const *argv[]) {
   error = 1;
   population = AllocatePopulation(population);
   InitializePopulation(population);
-  //PrintPopulation(population);
   GenDecodification(population);
   CalculateFitness(population);
-  while (error > 0.0001 && limit < 300000) {
+  while (error > 0.000001 && limit < 120000) {
     fathers = RouletteGame(population);
     population = Cross(population, fathers);
     Mutation(population);
@@ -31,15 +30,12 @@ int main(int argc, char const *argv[]) {
     CalculateFitness(population);
     error = 50 - population[idGbest].fitness;
     limit++;
+    printf("Generacion: %d\n", limit);
   }
-  printf("Generación: %d\n", limit);
-  //printf("\nPoblación solución\n");
-  //PrintPopulation(population);
   printf("Valor de x: %f\n", population[idGbest].values[0]);
   printf("Valor de y: %f\n", population[idGbest].values[1]);
   printf("Global best: %f\n", population[idGbest].fitness);
   FreeMemory(population);
-  free(population);
 
   return 0;
 }

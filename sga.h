@@ -12,8 +12,8 @@
  */
 
 #define GEN_NUM         2
-#define BITS_PER_GEN    10
-#define POPULATION_SIZE 100
+#define BITS_PER_GEN    12
+#define POPULATION_SIZE 10
 #define CHROMOSOM_SIZE  GEN_NUM*BITS_PER_GEN
 #define RANGE_MAX       10
 #define RANGE_MIN       0
@@ -32,9 +32,9 @@ void InitializePopulation(INDIVIDUO* population);
 void GenDecodification(INDIVIDUO* population);
 void CalculateFitness(INDIVIDUO* population);
 float* CalculateProbabilities(INDIVIDUO* population);
-char* RouletteGame(INDIVIDUO* population);
-char PlayRoulette(float* probabilities);
-INDIVIDUO* Cross(INDIVIDUO* population, char* fathers);
+int* RouletteGame(INDIVIDUO* population);
+int PlayRoulette(float* probabilities);
+INDIVIDUO* Cross(INDIVIDUO* population, int* fathers);
 void Mutation(INDIVIDUO* population);
 int SetupBest(INDIVIDUO* population, unsigned int idGbest);
 void CalculateFitness(INDIVIDUO* population);

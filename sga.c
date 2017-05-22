@@ -10,10 +10,18 @@ INDIVIDUO* AllocatePopulation(INDIVIDUO* population) {
   int i;
 
   population = (INDIVIDUO*)malloc(POPULATION_SIZE*sizeof(INDIVIDUO));
+  if(population == NULL) {
+    printf("ERROR 001: No se ha podido asignar memoria, intentalo con otra población.\n");
+    return 0;
+  }
   for (i = 0; i < POPULATION_SIZE; i++) {
     population[i].chromosom = (unsigned char*)malloc(GEN_NUM*BITS_PER_GEN*sizeof(unsigned char*));
     population[i].values = (float*)malloc(GEN_NUM*sizeof(float));
     population[i].bitsPerGen = (unsigned int*)malloc(GEN_NUM*sizeof(unsigned int));
+    if(population == NULL) {
+      printf("ERROR 001: No se ha podido asignar memoria, intentalo con otra población.\n");
+      return 0;
+    }
   }
 
   return population;
@@ -71,7 +79,6 @@ void CalculateFitness(INDIVIDUO* population)
   	x = population[i].values[0];
     y = population[i].values[1];
   	 population[i].fitness = 50 - (x-5) * (x-5) - (y-5) * (y-5);
-     //printf("Individuo [%d], fitness = %f\n", i, population[i].fitness);
   }
 }
 
@@ -80,6 +87,9 @@ float* CalculateProbabilities(INDIVIDUO* population) {
   int i;
   float fitnessTotal;
   float* probabilities;
+  float sum;
+
+  sum = 0;
 
   probabilities = (float*)malloc(POPULATION_SIZE*sizeof(float));
 
@@ -90,34 +100,39 @@ float* CalculateProbabilities(INDIVIDUO* population) {
   for (i = 0; i < POPULATION_SIZE; i++) {
     probabilities[i] = population[i].fitness/fitnessTotal;
     probabilities[i] *= 100;
-    //printf("\nProbabilidades de Individuo %d:\n", i);
-    //printf("- %f\n", probabilities[i]);
   }
 
   return probabilities;
 }
 
-char* RouletteGame(INDIVIDUO* population) {
-  char father;
+int* RouletteGame(INDIVIDUO* population) {
+  int father;
   int i;
+  int j;
   float* probabilities;
-  char* fathers;
+  int* fathers;
 
   probabilities = (float*)malloc(POPULATION_SIZE*sizeof(float));
-  fathers = (char*)malloc(POPULATION_SIZE*sizeof(char));
+  fathers = (int*)malloc(POPULATION_SIZE*sizeof(int));
 
   probabilities = CalculateProbabilities(population);
 
   for (i = 0; i < POPULATION_SIZE; i++) {
     father = PlayRoulette(probabilities);
+    for (j = 0; j < POPULATION_SIZE; j++) {
+      if(population[father].fitness < population[j].fitness) {
+        i--;
+        break;
+      }
+    }
     *(fathers + i) = father;
   }
 
   return fathers;
 }
 
-char PlayRoulette(float* probabilities) {
-  char father;
+int PlayRoulette(float* probabilities) {
+  int father;
   int i;
   float randNum;
   float incrementalRange;
@@ -135,7 +150,7 @@ char PlayRoulette(float* probabilities) {
   return father;
 }
 
-INDIVIDUO* Cross(INDIVIDUO* population, char* fathers)
+INDIVIDUO* Cross(INDIVIDUO* population, int* fathers)
 {
 	int i;
   int j;
@@ -143,9 +158,6 @@ INDIVIDUO* Cross(INDIVIDUO* population, char* fathers)
   int p2;
 	float numRand;
 	int Px;
-  unsigned char *chromosom1;
-  unsigned char *chromosom2;
-  unsigned char *chromosomAux;
 	INDIVIDUO* GenerationNew;
 
 
@@ -153,12 +165,9 @@ INDIVIDUO* Cross(INDIVIDUO* population, char* fathers)
 
   for (i = 0; i < POPULATION_SIZE; i+=2) {
     Px = (CHROMOSOM_SIZE - 1)*((1.0*rand())/RAND_MAX) + 1; //calcula el punto de cruza de progenitores
-    //printf("Punto de cruce: %d\n", Px);
     numRand = (1.0*rand())/RAND_MAX; //calcula el pc de progenitores
     p1 = *(fathers + i);
     p2 = *(fathers + i+1);
-    //PrintFathers(population[p1], p1);
-    //PrintFathers(population[p2], p2);
     if(numRand < PC) {
       for (j = 0; j < CHROMOSOM_SIZE; j++) {
         if(j < Px) {//si la interacion esta antes del punto de cruza
@@ -172,16 +181,16 @@ INDIVIDUO* Cross(INDIVIDUO* population, char* fathers)
       }
     }
     else {
-      //printf("\nNo se ha realizado la cruza de [%d][%d]\nPorque randNum = %f\n", p1, p2, numRand);
       //si no se cruzan entonces los nuevos hijos son exactamente iguales a los padres
-        for (j = 0; j <CHROMOSOM_SIZE ; j++) {
-          GenerationNew[i].chromosom[j] = population[p1].chromosom[j];
-          GenerationNew[i+1].chromosom[j] = population[p2].chromosom[j];
-        }
+      for (j = 0; j <CHROMOSOM_SIZE ; j++) {
+        GenerationNew[i].chromosom[j] = population[p1].chromosom[j];
+        GenerationNew[i+1].chromosom[j] = population[p2].chromosom[j];
+      }
     }
   }
 
-	return GenerationNew;
+  //FreeMemory(population);
+  return GenerationNew;
 }
 
 void Mutation(INDIVIDUO* population) {
@@ -191,7 +200,6 @@ void Mutation(INDIVIDUO* population) {
 
   for (i = 0; i < POPULATION_SIZE; i++) {
     for (j = 0; j < CHROMOSOM_SIZE; j++) {
-      //randNum = 1000*((1.0*rand())/RAND_MAX);
       randNum = rand() % 1000 + 1;
       if(randNum == 1) {
         if(population[i].chromosom[j] == 0) {
